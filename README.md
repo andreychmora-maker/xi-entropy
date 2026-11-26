@@ -1,7 +1,10 @@
 # Asymptotics of ξ-Entropy and Optimal Parameter Selection for Reed–Solomon Masked Cryptosystems
 
-[![Magma](https://img.shields.io/badge/Magma-V2.29%2B-blue.svg)](http://magma.maths.usyd.edu.au/magma/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24382646.svg)](https://doi.org/10.5281/zenodo.24382646)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+[![Magma Compatible](https://img.shields.io/badge/Language-Magma%20V2.29--10-blue.svg)](http://magma.maths.usyd.edu.au/calc/)
+
 
 Self-contained **Magma V2.29** verification and Monte Carlo simulation suite (`xi_entropy_verification.m`) accompanying the technical note:
 
@@ -95,7 +98,7 @@ Paste the contents of `xi_entropy_verification.m` directly into the [Magma Onlin
   title        = {Asymptotics of $\xi$-Entropy and Optimal Parameter Selection for Reed--Solomon Masked Cryptosystems},
   year         = {2026},
   publisher    = {Zenodo},
-  doi          = {10.5281/zenodo.XXXXXXX},
-  url          = {[https://doi.org/10.5281/zenodo.XXXXXXX](https://doi.org/10.5281/zenodo.XXXXXXX)}
+  doi          = {10.5281/zenodo.24566314},
+  url          = {https://doi.org/10.5281/zenodo.24566314}
 }
 ```
