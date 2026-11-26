@@ -279,9 +279,11 @@ print "";
 /* ============================================================================
  * PART 5: Live Algebraic RS[255, 192, 64]_{256} Masking & BM Decoding Test
  * ============================================================================ */
+N_LIVE := 55000; // Set to 10000 for ~15 s runtime on Magma Online Calculator
 print "==============================================================================";
 printf "PART 5: Live RS[255, 192, 64]_{256} Masking & Blind Decoding (%o frames)\n", N_LIVE;
 print "==============================================================================";
+
 F256<theta> := GF(256);
 F_nz := [x : x in F256 | x ne 0];
 C_RS := ReedSolomonCode(F256, 64);
@@ -300,11 +302,10 @@ function SampleSphereVec(n, w)
     return v;
 end function;
 
-mask_static := Random(V255); // represents m + (w || r_S)
-N_LIVE := 55000;
+mask_static    := Random(V255); // represents m + (w || r_S)
 ok_in_cohort   := 0;
-ok_xsession_bm := 0; // true bounded-distance decodings: dec in C_RS and wt(sum - dec) <= 31
-ok_xsession_eq := 0; // exact recovery of cw + prev_cw
+ok_xsession    := 0;
+exact_xsession := 0;
 
 prev_frame := Zero(V255);
 prev_cw    := Zero(V255);
@@ -318,7 +319,7 @@ for trial in [1..N_LIVE] do
     delta_r := SampleSphereVec(255, 8);
     rx := c_tx + mask_static + delta_r;
     ok, dec := Decode(C_RS, rx);
-    if ok and (dec in C_RS) and (Weight(rx - dec) le 31) and (dec eq cw) then
+    if ok and (dec eq cw) then
         ok_in_cohort +:= 1;
     end if;
 
@@ -327,9 +328,9 @@ for trial in [1..N_LIVE] do
         sum_frame := c_tx + prev_frame;
         ok_x, dec_x := Decode(C_RS, sum_frame);
         if ok_x and (dec_x in C_RS) and (Weight(sum_frame - dec_x) le 31) then
-            ok_xsession_bm +:= 1;
+            ok_xsession +:= 1;
             if dec_x eq (cw + prev_cw) then
-                ok_xsession_eq +:= 1;
+                exact_xsession +:= 1;
             end if;
         end if;
     end if;
@@ -337,8 +338,8 @@ for trial in [1..N_LIVE] do
     prev_cw    := cw;
 end for;
 printf "Authorized in-cohort decodings (d_H = 8, w_xi = 23):     %o / %o\n", ok_in_cohort, N_LIVE;
-printf "Cross-session valid BM decodings (wt(sum - dec) <= 31):  %o / %o\n", ok_xsession_bm, N_LIVE - 1;
-printf "Cross-session exact recovery (dec == cw_1 + cw_2):       %o / %o\n\n", ok_xsession_eq, N_LIVE - 1;
+printf "Cross-session valid BM decodings (wt(sum - dec) <= 31):  %o / %o\n", ok_xsession, N_LIVE - 1;
+printf "Cross-session exact recovery (dec == cw_1 + cw_2):       %o / %o\n\n", exact_xsession, N_LIVE - 1;
 
 /* ============================================================================
  * PART 6: Empirical Monte Carlo Demonstration of the Low-Rate Trap (GF(256))
